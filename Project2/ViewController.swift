@@ -13,35 +13,87 @@ class ViewController: UIViewController {
     @IBOutlet weak var button1: UIButton!
     @IBOutlet weak var button2: UIButton!
     @IBOutlet weak var button3: UIButton!
+    @IBOutlet weak var scoreLabel: UILabel!
     
-    var countries = [String] ()//when you add () it creates the actual string
+    let countries = ["estonia", "france", "germany", "ireland", "italy", "monaco", "russia", "spain", "uk", "us", "nigeria", "poland"]
     var score = 0, correctAnswer = 0
-    
-    //var countriesUsed: [String] = []
+    var userName : String?
+    var textField: UITextField?
+    var countriesLeft: [String] = []
+    var countriestemp: [String] = []
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        countries += ["estonia", "france", "germany", "ireland", "italy", "monaco", "russia", "spain", "uk", "us", "nigeria", "poland"]
-        //countriesUsed = countries
+        //countries += ["estonia", "france", "germany", "ireland", "italy", "monaco", "russia", "spain", "uk", "us", "nigeria", "poland"]
+        countriesLeft = countries
         button1.layer.borderWidth = 1
         button2.layer.borderWidth = 1
         button3.layer.borderWidth = 1
         button1.layer.borderColor = UIColor.lightGrayColor().CGColor
         button2.layer.borderColor = UIColor.lightGrayColor().CGColor
         button3.layer.borderColor = UIColor.lightGrayColor().CGColor
+        newGame()
+        
+    }
+    func newGame()
+    {
+        let ac = UIAlertController(title: "What's your name?", message:nil, preferredStyle:  .Alert)
+        ac.addAction(UIAlertAction(title:"Continue", style: .Default, handler:usernameTextField))
+        ac.addTextFieldWithConfigurationHandler{(textField) -> Void in
+            //textField.placeholder="Enter your name"
+            //self.textField = textField
+            self.textField = textField
+            self.textField?.placeholder = "Enter your name here"
+        }
+        presentViewController(ac, animated:true, completion:nil)
+        //        userName = textField?.text ?? "anon" USE THIS when specifying the the username for leaderboards if I do not use it before that
         askQuestion()
         
     }
+    func usernameTextField(action: UIAlertAction! = nil)
+    {
+        if let text = textField?.text where text.characters.count > 0 {
+            userName = text
+        }else {
+            userName = "anon"
+        }
+        scoreLabel.text = "\(userName!) your score is : \(score)"
+    }
     
     func askQuestion(action: UIAlertAction! = nil){
-        countries = GKRandomSource.sharedRandom().arrayByShufflingObjectsInArray(countries) as! [String]
+        countriestemp = GKRandomSource.sharedRandom().arrayByShufflingObjectsInArray(countries) as! [String]
+        let countryPick = countriesLeft.random
+        while (countriestemp[0] == countryPick || countriestemp[1] == countryPick)
+        {
+            countriestemp = GKRandomSource.sharedRandom().arrayByShufflingObjectsInArray(countries) as! [String]
+        }
+        //correctAnswer = GKRandomSource.sharedRandom().nextIntWithUpperBound(3)
+        if countryPick == nil
+        {
+            endGame()
+        } else {
+            title = countryPick!.uppercaseString
+        }
+        
         correctAnswer = GKRandomSource.sharedRandom().nextIntWithUpperBound(3)
-        title = countries[correctAnswer].uppercaseString
-        button1.setImage(UIImage(named:countries[0]), forState: .Normal)
-        button2.setImage(UIImage(named:countries[1]), forState: .Normal)
-        button3.setImage(UIImage(named:countries[2]), forState: .Normal)
-        //countriesUsed = countries
+            if (correctAnswer == 0)
+            {
+                button1.setImage(UIImage(named:countryPick!), forState: .Normal)
+                button2.setImage(UIImage(named:countriestemp[0]), forState: .Normal)
+                button3.setImage(UIImage(named:countries[1]), forState: .Normal)
+            }else if (correctAnswer == 1){
+                button1.setImage(UIImage(named:countriestemp[0]), forState: .Normal)
+                button2.setImage(UIImage(named:countryPick!), forState: .Normal)
+                button3.setImage(UIImage(named:countriestemp[1]), forState: .Normal)
+            }else if (correctAnswer == 2){
+                button1.setImage(UIImage(named:countriestemp[0]), forState: .Normal)
+                button2.setImage(UIImage(named:countriestemp[1]), forState: .Normal)
+                button3.setImage(UIImage(named:countryPick!), forState: .Normal)
+            }
+        let indexUsed  = countriesLeft.indexOf(countryPick!)
+        countriesLeft.removeAtIndex(indexUsed!)
+        
     }
     @IBAction func buttonTapped(sender: UIButton) {
         var title:String
@@ -52,26 +104,34 @@ class ViewController: UIViewController {
             title = "Wrong"
             --score
         }
-        let ac = UIAlertController(title: title, message: "Your score is \(score).", preferredStyle: .Alert)
+        let ac = UIAlertController(title: title, message: nil, preferredStyle: .Alert)
         ac.addAction(UIAlertAction(title:"Continue", style: .Default, handler:askQuestion))
         presentViewController(ac, animated: true, completion: nil)
-        
+        scoreLabel.text = "\(userName!) your score is : \(score)"
         
     }
+    
+    func endGame()
+    {
+        
+    }
+    
     /*
     func randomNumber() -> Int {
-        var randomNumber = Int(arc4random_uniform(12))
-        
-        while countriesUsed[randomNumber] == " "
-        {
-            randomNumber = Int(arc4random_uniform(12))
-        }
-        
-        countriesUsed[randomNumber] = " "
-        return randomNumber
-    } 
-*/
+        let randomNumber = Int(arc4random_uniform(12))
     
+    while countriesUsed[randomNumber] == " "
+    {
+    randomNumber = Int(arc4random_uniform(12))
+    }
+    
+    countriesUsed[randomNumber] = " "
+    return randomNumber
+    
+    }
+
+*/
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -80,5 +140,13 @@ class ViewController: UIViewController {
 
     let x = String()
     
+}
+
+extension Array {
+    
+    var random: Element? {
+        guard count > 0 else { return nil }
+        return self[Int(arc4random()%UInt32(count))]
+    }
 }
 

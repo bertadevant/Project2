@@ -41,13 +41,22 @@
                                     <action selector="buttonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="neO-e3-YVd"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rw3-gG-dRx">
+                                <rect key="frame" x="354" y="559" width="0.0" height="0.0"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="QJJ-Qz-Yra" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="4YP-RZ-nzT"/>
+                            <constraint firstItem="rw3-gG-dRx" firstAttribute="top" secondItem="mpq-Of-GDJ" secondAttribute="bottom" constant="99" id="CDg-UL-6rJ"/>
                             <constraint firstItem="UDZ-rj-FVb" firstAttribute="trailing" secondItem="QJJ-Qz-Yra" secondAttribute="trailing" id="DrO-lv-V89"/>
                             <constraint firstItem="UDZ-rj-FVb" firstAttribute="top" secondItem="QJJ-Qz-Yra" secondAttribute="bottom" constant="32" id="SnO-Fb-J4q"/>
+                            <constraint firstItem="rw3-gG-dRx" firstAttribute="centerX" secondItem="mpq-Of-GDJ" secondAttribute="centerX" id="Xmn-6q-bxg"/>
                             <constraint firstItem="mpq-Of-GDJ" firstAttribute="top" secondItem="UDZ-rj-FVb" secondAttribute="bottom" constant="30" id="bFz-z1-aGm"/>
                             <constraint firstItem="QJJ-Qz-Yra" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="34" id="bWx-mu-THg"/>
                             <constraint firstItem="mpq-Of-GDJ" firstAttribute="centerX" secondItem="UDZ-rj-FVb" secondAttribute="centerX" id="vwH-04-eXZ"/>
@@ -60,6 +69,7 @@
                         <outlet property="button1" destination="QJJ-Qz-Yra" id="6dA-Ob-FYN"/>
                         <outlet property="button2" destination="UDZ-rj-FVb" id="lAu-SQ-Wo4"/>
                         <outlet property="button3" destination="mpq-Of-GDJ" id="SZt-XX-Khq"/>
+                        <outlet property="scoreLabel" destination="rw3-gG-dRx" id="m7K-Pa-bno"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
