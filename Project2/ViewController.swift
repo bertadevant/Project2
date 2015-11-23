@@ -64,18 +64,22 @@ class ViewController: UIViewController {
     func askQuestion(action: UIAlertAction! = nil){
         countriestemp = GKRandomSource.sharedRandom().arrayByShufflingObjectsInArray(countries) as! [String]
         let countryPick = countriesLeft.random
-        while (countriestemp[0] == countryPick || countriestemp[1] == countryPick)
-        {
-            countriestemp = GKRandomSource.sharedRandom().arrayByShufflingObjectsInArray(countries) as! [String]
-        }
-        //correctAnswer = GKRandomSource.sharedRandom().nextIntWithUpperBound(3)
         if countryPick == nil
         {
             endGame()
+            return
+            
         } else {
             title = countryPick!.uppercaseString
         }
-        
+
+        let indexUsedTemp  = countriestemp.indexOf(countryPick!)
+        countriestemp.removeAtIndex(indexUsedTemp!)
+        while (countriestemp[0] == countryPick || countriestemp[1] == countryPick)
+        {
+            countriestemp = GKRandomSource.sharedRandom().arrayByShufflingObjectsInArray(countries) as! [String]
+            
+        }
         correctAnswer = GKRandomSource.sharedRandom().nextIntWithUpperBound(3)
             if (correctAnswer == 0)
             {
@@ -91,7 +95,8 @@ class ViewController: UIViewController {
                 button2.setImage(UIImage(named:countriestemp[1]), forState: .Normal)
                 button3.setImage(UIImage(named:countryPick!), forState: .Normal)
             }
-        let indexUsed  = countriesLeft.indexOf(countryPick!)
+        //let indexUsed  = countriesLeft.indexOf(countryPick!)
+        let indexUsed = countriesLeft.indexOf(countryPick!)
         countriesLeft.removeAtIndex(indexUsed!)
         
     }
@@ -113,7 +118,17 @@ class ViewController: UIViewController {
     
     func endGame()
     {
+        setUpAlert("Your Final score is \(score)",buttonText: "Continue")
         
+    }
+    
+    func setUpAlert(title:String, buttonText: String)
+    {
+    
+        let ac = UIAlertController(title:title , message: nil, preferredStyle: .Alert)
+        ac.addAction(UIAlertAction(title: buttonText, style: .Default, handler: { _ -> Void in self.performSegueWithIdentifier("LeaderBoardSegue", sender: self) }))
+        presentViewController(ac, animated: true, completion: nil)
+
     }
     
     /*
@@ -132,6 +147,15 @@ class ViewController: UIViewController {
 
 */
 
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "LeaderBoardSegue"
+        {
+            if let destinationVC = segue.destinationViewController as? LeaderboardViewController {
+                destinationVC.scoreToDisplay = score
+                destinationVC.usernameToDisplay = userName ?? "anon"
+            }
+        }
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
